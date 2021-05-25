@@ -15,9 +15,23 @@
     <title>@yield('title')</title>
 </head>
 <body>
-    <header class="container">
-        <div class="bg-light p-4 my-2">
-            <h1>@yield('title')</h1>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light px-4 d-flex justify-content-between">
+            <a href="{{ route('list_series') }}" class="navbar-brand">Home</a>
+
+            @auth
+                <a href="/exit" class="text-danger">Sair</a>
+            @endauth
+
+            @guest
+                <a href="/login" class="text-primary">Entrar</a>
+            @endguest
+        </nav>
+
+        <div class="container ">
+            <div class="bg-light p-4 my-2">
+                <h1>@yield('title')</h1>
+            </div>
         </div>
     </header>
     
