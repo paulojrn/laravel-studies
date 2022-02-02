@@ -13,11 +13,21 @@ class SerieController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $series = Serie::all();
+        $series = Serie::query()
+            ->orderBy("nome", "ASC")
+            ->get();
 
-        return new Response(view("serie.index", ["series" => $series]));
+        $message = $request->session()->get("message");
+
+        return new Response(view("serie.index", [
+            "series" => $series,
+            "message" => $message
+        ]));
+
+        // $series = Serie::all();
+        // $request->session()->remove("message");
     }
 
     /**
@@ -38,14 +48,24 @@ class SerieController extends Controller
      */
     public function store(Request $request): Response
     {
+        $serie = Serie::create($request->all());
+        
+        $request->session()->flash(
+            "message",
+            "Série [{$serie->id}] {$serie->nome} adicionada com sucesso!"
+        );
+
+        return new Response();
+
         // $nome = $request->get("nome");
         // $serie = new Serie();
         // $serie->nome = $nome;
         // $serie->save();
 
-        $serie = Serie::create($request->all());
-
-        return $this->index();
+        // $request->session()->put(
+        //     "message",
+        //     "Série {$serie->id}:{$serie->nome} adicionada com sucesso!"
+        // );
     }
 
     /**

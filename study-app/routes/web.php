@@ -17,8 +17,8 @@ use Illuminate\Support\Facades\Route;
 
 // Route::get("/", "SerieController@index");
 
-Route::get('/', function () {
-    return (new SerieController())->index();
+Route::get('/', function (Request $request) {
+    return (new SerieController())->index($request);
 });
 
 Route::get('/serie/create', function () {
@@ -26,5 +26,6 @@ Route::get('/serie/create', function () {
 });
 
 Route::post('/serie/create', function (Request $request) {
-    return (new SerieController())->store($request);
+    (new SerieController())->store($request);
+    return redirect("/");
 });

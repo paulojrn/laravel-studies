@@ -5,6 +5,12 @@
 @endsection
 
 @section("content")
+@if (isset($message) && !empty($message))
+    <div class="alert alert-success">
+        {{ $message }}
+    </div>
+@endif
+
 <a href="/serie/create" class="btn btn-success mb-2">
     Adicionar
 </a>
