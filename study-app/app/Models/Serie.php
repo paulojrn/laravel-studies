@@ -23,4 +23,9 @@ class Serie extends Model
      * Permite ser adicionado em forma de massa para 'Serie::create(array)'
      */
     protected $fillable = ["nome"];
+
+    public function temporadas()
+    {
+        return $this->hasMany(Temporada::class);
+    }
 }
