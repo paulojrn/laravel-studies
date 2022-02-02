@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\SerieController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Route::get("/", "SerieController@index");
+
 Route::get('/', function () {
-    return view('welcome');
+    return (new SerieController())->index();
+});
+
+Route::get('/serie/create', function () {
+    return (new SerieController())->create();
+});
+
+Route::post('/serie/create', function (Request $request) {
+    return (new SerieController())->store($request);
 });
