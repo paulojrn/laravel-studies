@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SerieFormRequest;
 use App\Models\Serie;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -43,10 +44,10 @@ class SerieController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param SerieFormRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request): Response
+    public function store(SerieFormRequest $request): Response
     {
         $serie = Serie::create($request->all());
         
@@ -66,6 +67,10 @@ class SerieController extends Controller
         //     "message",
         //     "Série {$serie->id}:{$serie->nome} adicionada com sucesso!"
         // );
+
+        // $request->validate([
+        //     "nome" => "required|min:2"
+        // ]);
     }
 
     /**
@@ -108,8 +113,15 @@ class SerieController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id): Response
+    public function destroy(Request $request): Response
     {
+        Serie::destroy($request->id);
+        
+        $request->session()->flash(
+            "message",
+            "A série removida com sucesso"
+        );
+
         return new Response();
     }
 }

@@ -11,12 +11,25 @@
     </div>
 @endif
 
-<a href="/serie/create" class="btn btn-success mb-2">
+<a href="{{ route('form_create') }}" class="btn btn-success mb-2">
     Adicionar
 </a>
 <ul class="list-group">
     @foreach ($series as $serie)
-        <li class="list-group-item">{{ $serie->nome }}</li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ $serie->nome }}
+
+            <form   method="POST" 
+                    action="{{ route('do_delete', ['id' => $serie->id]) }}"
+                    onsubmit="return confirm('Remover {{ addslashes($serie->nome) }}?');">
+                @csrf
+                @method("DELETE")
+                
+                <button class="btn btn-sm btn-danger">
+                    Excluir
+                </button>
+            </form>
+        </li>
     @endforeach
 </ul>
 @endsection
