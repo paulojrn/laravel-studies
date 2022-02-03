@@ -21,7 +21,7 @@ class CreateEpisodiosTable extends Migration
             
             $table->foreign("temporada_id")
                 ->references("id")
-                ->on("temporada");
+                ->on("temporadas");
         });
     }
 

@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SerieFormRequest;
+use App\Models\Episodio;
 use App\Models\Serie;
+use App\Models\Temporada;
+use App\Services\SerieService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -49,28 +52,14 @@ class SerieController extends Controller
      */
     public function store(SerieFormRequest $request): Response
     {
-        $serie = Serie::create($request->all());
+        $serie = SerieService::createSerie($request);
         
         $request->session()->flash(
             "message",
-            "Série [{$serie->id}] {$serie->nome} adicionada com sucesso!"
+            "Série {$serie->nome} seus episódios e temporadas criada com sucesso!"
         );
 
         return new Response();
-
-        // $nome = $request->get("nome");
-        // $serie = new Serie();
-        // $serie->nome = $nome;
-        // $serie->save();
-
-        // $request->session()->put(
-        //     "message",
-        //     "Série {$serie->id}:{$serie->nome} adicionada com sucesso!"
-        // );
-
-        // $request->validate([
-        //     "nome" => "required|min:2"
-        // ]);
     }
 
     /**
@@ -115,7 +104,7 @@ class SerieController extends Controller
      */
     public function destroy(Request $request): Response
     {
-        Serie::destroy($request->id);
+        SerieService::destroySerie($request->id);
         
         $request->session()->flash(
             "message",

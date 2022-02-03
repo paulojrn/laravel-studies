@@ -9,6 +9,9 @@ class Temporada extends Model
 {
     use HasFactory;
 
+    protected $fillable = ["numero"];
+    public $timestamps = false;
+
     public function episodios()
     {
         return $this->hasMany(Episodio::class);
