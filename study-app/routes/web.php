@@ -5,6 +5,7 @@ use App\Http\Controllers\SerieController;
 use App\Http\Controllers\TemporadaController;
 use App\Http\Requests\SerieFormRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,38 +19,42 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get("/", "SerieController@index");
+Route::get("/", SerieController::class . "@index");
 
-Route::get('/', function (Request $request) {
-    return (new SerieController())->index($request);
-})->name("index");
+// Route::get('/', function (Request $request) {
+//     return (new SerieController())->index($request);
+// })->name("index");
 
 Route::get('/serie/create', function () {
     return (new SerieController())->create();
-})->name("form_create");
+})->name("form_create")->middleware("auth");
 
 Route::post('/serie', function (SerieFormRequest $request) {
     (new SerieController())->store($request);
     return redirect("/");
-})->name("do_create");
+})->name("do_create")->middleware("auth");
 
 Route::delete('/serie/{id}', function (Request $request) {
     (new SerieController())->destroy($request);
     return redirect()->route("index");
-})->name("do_delete");
+})->name("do_delete")->middleware("auth");
 
 Route::get('/serie/{id}/temporadas', function ($id) {
     return (new TemporadaController())->index($id);
-})->name("show_temporadas");
+})->name("show_temporadas")->middleware("auth");
 
 Route::post('/serie/{id}/edit-name', function ($id, Request $request) {
     return (new SerieController())->edit($id, $request);
-});
+})->middleware("auth");
 
 Route::get('/temporada/{id}/episodios', function ($id, Request $request) {
     return (new EpisodioController())->index($id, $request);
-});
+})->middleware("auth");
 
 Route::post('/temporada/{id}/episodios/assistir', function ($id, Request $request) {
     return (new EpisodioController())->assistir($id, $request);
-});
+})->middleware("auth");
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
