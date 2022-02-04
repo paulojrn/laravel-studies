@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EpisodioController;
 use App\Http\Controllers\SerieController;
 use App\Http\Controllers\TemporadaController;
 use App\Http\Requests\SerieFormRequest;
@@ -41,6 +42,14 @@ Route::get('/serie/{id}/temporadas', function ($id) {
     return (new TemporadaController())->index($id);
 })->name("show_temporadas");
 
-Route::post('/serie/{id}/edit-name', function (Request $request) {
-    return (new SerieController())->edit($request);
+Route::post('/serie/{id}/edit-name', function ($id, Request $request) {
+    return (new SerieController())->edit($id, $request);
+});
+
+Route::get('/temporada/{id}/episodios', function ($id, Request $request) {
+    return (new EpisodioController())->index($id, $request);
+});
+
+Route::post('/temporada/{id}/episodios/assistir', function ($id, Request $request) {
+    return (new EpisodioController())->assistir($id, $request);
 });
