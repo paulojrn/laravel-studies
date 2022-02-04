@@ -79,8 +79,12 @@ class SerieController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id): Response
+    public function edit(int $id, Request $request): Response
     {
+        $serie = Serie::find($id);
+        $serie->nome = $request->nome;
+        $serie->save();
+
         return new Response();
     }
 

@@ -40,3 +40,7 @@ Route::delete('/serie/{id}', function (Request $request) {
 Route::get('/serie/{id}/temporadas', function ($id) {
     return (new TemporadaController())->index($id);
 })->name("show_temporadas");
+
+Route::post('/serie/{id}/edit-name', function (Request $request) {
+    return (new SerieController())->edit($request);
+});
