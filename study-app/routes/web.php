@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\EntrarController;
 use App\Http\Controllers\EpisodioController;
+use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\SerieController;
 use App\Http\Controllers\TemporadaController;
 use App\Http\Requests\SerieFormRequest;
@@ -41,7 +43,7 @@ Route::delete('/serie/{id}', function (Request $request) {
 
 Route::get('/serie/{id}/temporadas', function ($id) {
     return (new TemporadaController())->index($id);
-})->name("show_temporadas")->middleware("auth");
+})->name("show_temporadas");
 
 Route::post('/serie/{id}/edit-name', function ($id, Request $request) {
     return (new SerieController())->edit($id, $request);
@@ -49,7 +51,7 @@ Route::post('/serie/{id}/edit-name', function ($id, Request $request) {
 
 Route::get('/temporada/{id}/episodios', function ($id, Request $request) {
     return (new EpisodioController())->index($id, $request);
-})->middleware("auth");
+});
 
 Route::post('/temporada/{id}/episodios/assistir', function ($id, Request $request) {
     return (new EpisodioController())->assistir($id, $request);
@@ -58,3 +60,13 @@ Route::post('/temporada/{id}/episodios/assistir', function ($id, Request $reques
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get("/entrar", EntrarController::class . "@index");
+Route::post("/entrar", EntrarController::class . "@entrar");
+
+Route::get("/registrar", RegistroController::class . "@create");
+Route::post("/registrar", RegistroController::class . "@store");
+Route::get("/sair", function () {
+    Auth::logout();
+    return redirect("/entrar");
+});

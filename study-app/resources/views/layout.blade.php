@@ -11,6 +11,17 @@
     <title>Controle de séries</title>
 </head>
 <body>
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid d-flex justify-content-between">
+            <a href="/" class="navbar-brand">Home</a>
+            @auth
+                <a href="/sair" class="text-danger">Sair</a>
+            @endauth
+            @guest
+                <a href="/entrar">Entrar</a>
+            @endguest
+        </div>
+   </nav>
     <header class="bg-secondary p-5 rounded-lg m-3">
         @yield("header")
     </header>
