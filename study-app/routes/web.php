@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+$middlewareAuth = "autenticador";
+
 Route::get("/", SerieController::class . "@index");
 
 // Route::get('/', function (Request $request) {
@@ -29,17 +31,17 @@ Route::get("/", SerieController::class . "@index");
 
 Route::get('/serie/create', function () {
     return (new SerieController())->create();
-})->name("form_create")->middleware("auth");
+})->name("form_create")->middleware($middlewareAuth);
 
 Route::post('/serie', function (SerieFormRequest $request) {
     (new SerieController())->store($request);
     return redirect("/");
-})->name("do_create")->middleware("auth");
+})->name("do_create")->middleware($middlewareAuth);
 
 Route::delete('/serie/{id}', function (Request $request) {
     (new SerieController())->destroy($request);
     return redirect()->route("index");
-})->name("do_delete")->middleware("auth");
+})->name("do_delete")->middleware($middlewareAuth);
 
 Route::get('/serie/{id}/temporadas', function ($id) {
     return (new TemporadaController())->index($id);
@@ -47,7 +49,7 @@ Route::get('/serie/{id}/temporadas', function ($id) {
 
 Route::post('/serie/{id}/edit-name', function ($id, Request $request) {
     return (new SerieController())->edit($id, $request);
-})->middleware("auth");
+})->middleware($middlewareAuth);
 
 Route::get('/temporada/{id}/episodios', function ($id, Request $request) {
     return (new EpisodioController())->index($id, $request);
@@ -55,7 +57,7 @@ Route::get('/temporada/{id}/episodios', function ($id, Request $request) {
 
 Route::post('/temporada/{id}/episodios/assistir', function ($id, Request $request) {
     return (new EpisodioController())->assistir($id, $request);
-})->middleware("auth");
+})->middleware($middlewareAuth);
 
 Auth::routes();
 
