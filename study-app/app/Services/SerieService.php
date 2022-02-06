@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class SerieService
 {
-    public static function createSerie(Request $request): ?Serie
+    public static function createSerie(?Request $request): ?Serie
     {
         $serie = null;
         DB::beginTransaction();
@@ -17,6 +17,30 @@ class SerieService
             $serie = Serie::create(["nome" => $request->nome]);
             $qntTemporadas = $request->qnt_temporadas;
             $qntEpPorTemporada = $request->ep_por_temporada;
+            
+            for ($i = 1; $i <= $qntTemporadas; $i++) { 
+                $temporada = $serie->temporadas()->create(["numero" => $i]);
+
+                for ($j = 1; $j <= $qntEpPorTemporada; $j++) {
+                    $episodio = $temporada->episodios()->create(["numero" => $j]);
+                }
+            }
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+        }
+        
+        return $serie;
+    }
+
+    public static function createSerie2($nome, $qntTemporadas, $qntEpPorTemporada): ?Serie
+    {
+        $serie = null;
+        DB::beginTransaction();
+
+        try {
+            $serie = Serie::create(["nome" => $nome]);
             
             for ($i = 1; $i <= $qntTemporadas; $i++) { 
                 $temporada = $serie->temporadas()->create(["numero" => $i]);
