@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SerieFormRequest;
+use App\Mail\NovaSerie;
 use App\Models\Episodio;
 use App\Models\Serie;
 use App\Models\Temporada;
+use App\Models\User;
 use App\Services\SerieService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Mail;
 
 class SerieController extends Controller
 {
@@ -53,7 +56,23 @@ class SerieController extends Controller
     public function store(SerieFormRequest $request): Response
     {
         $serie = SerieService::createSerie($request);
-        
+
+        $user = $request->user();
+        $users = User::all();
+
+        foreach ($users as $user) {
+            $email = new NovaSerie(
+                $serie->nome,
+                $request->qnt_temporadas,
+                $request->ep_por_temporada
+            );
+
+            $email->subject = "Nova série adicionada!";
+
+            Mail::to($user)->send($email);
+            sleep(2);
+        }
+
         $request->session()->flash(
             "message",
             "Série {$serie->nome} seus episódios e temporadas criada com sucesso!"

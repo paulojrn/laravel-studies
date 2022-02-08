@@ -9,6 +9,7 @@ use App\Http\Requests\SerieFormRequest;
 use App\Mail\NovaSerie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -76,4 +77,17 @@ Route::get("/sair", function () {
 
 Route::get("/email", function () {
     return new NovaSerie("Arrow", 1, 4);
+});
+
+Route::get("/email/send", function () {
+    $email = new NovaSerie("Arrow", 1, 4);
+    $email->subject = "Nova série adicionada";
+
+    $user = (object) [
+        "email" => "paulo@teste.com",
+        "name" => "Paulo JRN"
+    ];
+
+    Mail::to($user)->send($email);
+    return "E-mail enviado";
 });
