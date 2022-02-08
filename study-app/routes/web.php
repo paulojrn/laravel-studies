@@ -6,6 +6,7 @@ use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\SerieController;
 use App\Http\Controllers\TemporadaController;
 use App\Http\Requests\SerieFormRequest;
+use App\Mail\NovaSerie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -71,4 +72,8 @@ Route::post("/registrar", RegistroController::class . "@store");
 Route::get("/sair", function () {
     Auth::logout();
     return redirect("/entrar");
+});
+
+Route::get("/email", function () {
+    return new NovaSerie("Arrow", 1, 4);
 });
