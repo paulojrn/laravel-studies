@@ -76,6 +76,8 @@ class SerieService
 
         try {
             $serie = Serie::find($id);
+            $serieObj = (object) $serie->toArray();
+
             $serie->temporadas()->each(function (Temporada $temporada) {
                 $temporada->episodios()->each(function (Episodio $episodio) {
                     $episodio->delete();
@@ -86,7 +88,7 @@ class SerieService
 
             $serie->delete();
 
-            $evento = new SerieApagadaEvent($serie);
+            $evento = new SerieApagadaEvent($serieObj);
             event($evento);
 
             DB::commit();

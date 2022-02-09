@@ -22,7 +22,7 @@ class SerieApagadaEvent
      *
      * @return void
      */
-    public function __construct(Serie $serie)
+    public function __construct(Object $serie)
     {
         $this->serie = $serie;
     }
