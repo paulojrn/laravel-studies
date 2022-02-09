@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Route;
 
 $middlewareAuth = "autenticador";
 
-Route::get("/", SerieController::class . "@index");
+Route::get("/", SerieController::class . "@index")->name("index");
 
 // Route::get('/', function (Request $request) {
 //     return (new SerieController())->index($request);
