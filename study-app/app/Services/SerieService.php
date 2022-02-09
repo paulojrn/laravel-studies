@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\SerieApagadaEvent;
 use App\Models\{Serie, Temporada, Episodio};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -85,9 +86,8 @@ class SerieService
 
             $serie->delete();
 
-            if ($serie->capa) {
-                Storage::disk("public")->delete("serie/".$serie->capa);
-            }
+            $evento = new SerieApagadaEvent($serie);
+            event($evento);
 
             DB::commit();
         } catch (\Throwable $th) {
