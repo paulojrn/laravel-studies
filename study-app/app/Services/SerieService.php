@@ -5,16 +5,27 @@ namespace App\Services;
 use App\Models\{Serie, Temporada, Episodio};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class SerieService
 {
     public static function createSerie(?Request $request): ?Serie
     {
         $serie = null;
+        $data = [];
+        $data["nome"] = $request->nome;
+        
+        if ($request->hasFile("capa")) {
+            $path = $request->file("capa")->store("public/serie");
+            
+            $data["capa"] = last(explode("/", $path));
+        }
+
         DB::beginTransaction();
 
         try {
-            $serie = Serie::create(["nome" => $request->nome]);
+            $serie = Serie::create($data);
+
             $qntTemporadas = $request->qnt_temporadas;
             $qntEpPorTemporada = $request->ep_por_temporada;
             
@@ -73,6 +84,10 @@ class SerieService
             });
 
             $serie->delete();
+
+            if ($serie->capa) {
+                Storage::disk("public")->delete("serie/".$serie->capa);
+            }
 
             DB::commit();
         } catch (\Throwable $th) {

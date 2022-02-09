@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Serie extends Model
 {
@@ -22,7 +23,20 @@ class Serie extends Model
     /**
      * Permite ser adicionado em forma de massa para 'Serie::create(array)'
      */
-    protected $fillable = ["nome"];
+    protected $fillable = ["nome", "capa"];
+
+    /**
+     * Mutator
+     */
+    public function getCapaUrlAttribute() {
+        $capaName = "sem-foto.jpg";
+
+        if (!is_null($this->capa)) {
+            $capaName = $this->capa;
+        }
+
+        return Storage::url("serie/$capaName");
+    }
 
     public function temporadas()
     {

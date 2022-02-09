@@ -46,7 +46,7 @@ class EnviarEmailNovaSerieListener
             // $when = now()->addSecond($mult * 5);
             // Mail::to($user)->later($when, $email);
             
-            Mail::to($user)->send($email);
+            // Mail::to($user)->send($email);
         }
     }
 }

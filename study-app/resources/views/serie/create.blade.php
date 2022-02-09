@@ -7,7 +7,10 @@
 @section("content")
 @include('subviews.erros', ['errors' => $errors])
 
-<form method="POST" action="{{ route('do_create') }}">
+<form   method="POST" 
+        action="{{ route('do_create') }}"
+        enctype="multipart/form-data">
+        
     @csrf
     <div class="row">
         <div class="col-8">
@@ -21,6 +24,12 @@
         <div class="col-2">
             <label for="ep_por_temporada">Episódios por temporada</label>
             <input type="number" id="ep_por_temporada" name="ep_por_temporada" class="form-control">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <label for="capa">Capa</label>
+            <input type="file" id="capa" name="capa" class="form-control">
         </div>
     </div>
     <hr>
