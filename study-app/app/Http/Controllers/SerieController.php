@@ -60,7 +60,8 @@ class SerieController extends Controller
         $user = $request->user();
         $users = User::all();
 
-        foreach ($users as $user) {
+        foreach ($users as $index => $user) {
+            $mult = $index + 1;
             $email = new NovaSerie(
                 $serie->nome,
                 $request->qnt_temporadas,
@@ -68,9 +69,9 @@ class SerieController extends Controller
             );
 
             $email->subject = "Nova série adicionada!";
+            $when = now()->addSecond($mult * 5);
 
-            Mail::to($user)->send($email);
-            sleep(2);
+            Mail::to($user)->later($when, $email); //send, queue, later
         }
 
         $request->session()->flash(
