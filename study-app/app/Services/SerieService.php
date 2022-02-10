@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Events\SerieApagadaEvent;
+use App\Jobs\ExcluirCapaSerieJob;
 use App\Models\{Serie, Temporada, Episodio};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -88,8 +89,10 @@ class SerieService
 
             $serie->delete();
 
-            $evento = new SerieApagadaEvent($serieObj);
-            event($evento);
+            // $evento = new SerieApagadaEvent($serieObj);
+            // event($evento);
+            
+            ExcluirCapaSerieJob::dispatch($serieObj);
 
             DB::commit();
         } catch (\Throwable $th) {

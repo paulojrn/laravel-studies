@@ -23,13 +23,13 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        NovaSerieEvent::class => [
-            EnviarEmailNovaSerieListener::class,
-            LogNovaSerieListener::class
-        ],
-        SerieApagadaEvent::class => [
-            ExcluirCapaSerieListener::class
-        ]
+        // NovaSerieEvent::class => [
+        //     EnviarEmailNovaSerieListener::class,
+        //     LogNovaSerieListener::class
+        // ],
+        // SerieApagadaEvent::class => [
+        //     ExcluirCapaSerieListener::class
+        // ]
     ];
 
     /**
